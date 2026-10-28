@@ -1,0 +1,13 @@
+# Implantação pelo "Git™ Version Control" do cPanel.
+# O cPanel clona o repositório em ~/repositories/padaria-mae-chica e, ao clicar em
+# "Deploy HEAD Commit", copia o código para ~/padaria-mae-chica (diretório próprio, fora do public_html).
+# Aponte o subdomínio para ~/padaria-mae-chica/public.
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=$HOME/padaria-mae-chica
+    - mkdir -p $DEPLOYPATH
+    - /bin/rsync -a --delete --exclude='.git' --exclude='.env' --exclude='storage/' --exclude='vendor/' --exclude='composer.phar' --exclude='database/*.sqlite' ./ $DEPLOYPATH/
+    - mkdir -p $DEPLOYPATH/storage/app/documentos $DEPLOYPATH/storage/framework/cache/data $DEPLOYPATH/storage/framework/sessions $DEPLOYPATH/storage/framework/views $DEPLOYPATH/storage/logs $DEPLOYPATH/bootstrap/cache
+    - cd $DEPLOYPATH && (test -f composer.phar || curl -sS https://getcomposer.org/installer | php) && php composer.phar install --no-dev --optimize-autoloader --no-interaction
+    - cd $DEPLOYPATH && test -f .env && php artisan migrate --force && php artisan db:seed --class=ProductionSeeder --force && php artisan config:cache && php artisan route:cache && php artisan view:cache || true

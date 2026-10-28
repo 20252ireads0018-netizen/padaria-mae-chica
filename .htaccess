@@ -1,0 +1,11 @@
+# Fallback para cPanel: se o domínio/subdomínio apontar para a raiz do projeto
+# (em vez de /public), redireciona tudo para public/ e bloqueia arquivos sensíveis.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(\.env|\.git|composer\.(json|lock)|artisan|database|storage|vendor|app|config|routes|resources|tests|bootstrap) - [F,L,NC]
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
