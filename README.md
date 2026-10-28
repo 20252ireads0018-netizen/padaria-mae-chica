@@ -33,6 +33,10 @@ Acesse http://localhost:8000. O banco padrão é SQLite (`database/database.sqli
 7. **Contabilidade** — hoje, semana, mês, trimestre, ano, 12 meses ou período livre; comparação com o período anterior, margem, categorias, formas de pagamento, demonstrativo mês a mês e exportação CSV (Excel).
 8. **Escolas** — pedidos por dia/turno, lista de produção da semana, repetir pedido em dias úteis ou copiar a semana, relatório mensal por escola e faturamento do mês.
 
+## Publicação
+
+Veja [DEPLOY-CPANEL.md](DEPLOY-CPANEL.md) para colocar no cPanel em diretório próprio (via GitHub ou arquivo zip).
+
 ## Testes
 
 ```bash
