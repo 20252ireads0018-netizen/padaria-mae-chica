@@ -12,7 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias(['role' => \App\Http\Middleware\EnsureRole::class]);
-        $middleware->redirectGuestsTo('/login');
+        $middleware->redirectGuestsTo(fn () => route('login'));
+        // Cloudflare / proxy da hospedagem: respeita X-Forwarded-Proto para gerar links https
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

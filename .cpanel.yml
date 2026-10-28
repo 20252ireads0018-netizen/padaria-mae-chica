@@ -10,4 +10,4 @@ deployment:
     - /bin/rsync -a --delete --exclude='.git' --exclude='.env' --exclude='storage/' --exclude='vendor/' --exclude='composer.phar' --exclude='database/*.sqlite' ./ $DEPLOYPATH/
     - mkdir -p $DEPLOYPATH/storage/app/documentos $DEPLOYPATH/storage/framework/cache/data $DEPLOYPATH/storage/framework/sessions $DEPLOYPATH/storage/framework/views $DEPLOYPATH/storage/logs $DEPLOYPATH/bootstrap/cache
     - cd $DEPLOYPATH && (test -f composer.phar || curl -sS https://getcomposer.org/installer | php) && php composer.phar install --no-dev --optimize-autoloader --no-interaction
-    - cd $DEPLOYPATH && test -f .env && php artisan migrate --force && php artisan db:seed --class=ProductionSeeder --force && php artisan config:cache && php artisan route:cache && php artisan view:cache || true
+    - cd $DEPLOYPATH && test -f .env && php artisan migrate --force && php artisan db:seed --class=ProductionSeeder --force && php artisan config:cache && php artisan view:cache || true

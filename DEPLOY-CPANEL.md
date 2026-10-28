@@ -45,10 +45,19 @@ Copie `.env.production.example` para `.env` dentro de `~/padaria-mae-chica` e pr
 ```bash
 php artisan migrate --force
 php artisan db:seed --class=ProductionSeeder --force
-php artisan config:cache && php artisan route:cache && php artisan view:cache
+php artisan config:cache && php artisan view:cache
 chmod -R 775 storage bootstrap/cache
 ```
 > Sem Terminal no plano? Use o caminho 3a: o `.cpanel.yml` executa esses comandos no deploy.
+
+## Alternativa sem DNS: pasta no domínio principal (em uso: websight.com.br/padaria)
+Quando não há acesso ao DNS (ex.: domínio no Cloudflare de outra conta), o código continua em `~/padaria-mae-chica`
+e só uma entrada fica em `public_html/padaria`:
+- `index.php` que carrega `~/padaria-mae-chica/vendor` e `bootstrap/app.php` e chama `$app->usePublicPath(__DIR__)`;
+- `.htaccess` do Laravel com `DirectoryIndex index.php` e `RewriteRule ^$ index.php [L]`;
+- cópia de `public/css`, `public/js`, `public/img` e `favicon.ico` (copie de novo quando esses arquivos mudarem).
+- No `.env`: `APP_URL=https://websight.com.br/padaria`.
+- Não use `php artisan route:cache` nessa configuração (quebra a rota raiz dentro da subpasta).
 
 ## Observações
 - Se não puder escolher a raiz do subdomínio, aponte para `padaria-mae-chica`: o `.htaccess` da raiz redireciona para `public/` e bloqueia arquivos sensíveis.
